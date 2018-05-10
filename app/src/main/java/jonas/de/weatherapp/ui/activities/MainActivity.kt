@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import jonas.de.weatherapp.ui.adapters.ForecastListAdapter
 import jonas.de.weatherapp.R
 import jonas.de.weatherapp.data.Request
+import jonas.de.weatherapp.domain.commands.RequestForecastCommand
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.longToast
@@ -28,12 +29,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val forecastList = find<RecyclerView>(R.id.forecast_list)
         forecastList.layoutManager = LinearLayoutManager(this)
-        forecastList.adapter = ForecastListAdapter(items)
+        //forecastList.adapter = ForecastListAdapter(items)
 
         val url = "http://api.openweathermap.org/data/2.5/forecast/daily?" +
                 "APPID=15646a06818f61f7b8d7823ca833e1ce&q=94043&mode=json&units=metric&cnt=7"
 
-        doAsync { Request(url).run()
-        uiThread { longToast("Request performed") }}
+        doAsync {
+            val result = RequestForecastCommand("30453").execute()
+            uiThread { forecastList.adapter = ForecastListAdapter(result) }
+        }
     }
 }

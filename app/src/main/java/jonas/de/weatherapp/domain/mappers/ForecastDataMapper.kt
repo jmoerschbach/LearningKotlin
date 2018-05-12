@@ -4,6 +4,7 @@ package jonas.de.weatherapp.domain.mappers
 import android.graphics.ColorSpace
 import jonas.de.weatherapp.data.Forecast
 import jonas.de.weatherapp.data.ForecastResult
+import jonas.de.weatherapp.data.Weather
 import jonas.de.weatherapp.domain.model.Forecast as ModelForecast
 import jonas.de.weatherapp.domain.model.ForecastList
 import java.text.DateFormat
@@ -23,7 +24,14 @@ class ForecastDataMapper {
     }
 
     private fun convertForecastItemToDomain(forecast: Forecast): ModelForecast {
-        return ModelForecast(convertDate(forecast.dt), forecast.weather[0].description, forecast.temp.max.toInt(), forecast.temp.min.toInt())
+        return ModelForecast(convertDate(forecast.dt),
+                forecast.weather[0].description,
+                forecast.temp.max.toInt(), forecast.temp.min.toInt(),
+                generateIconUrl(forecast.weather[0].icon))
+    }
+
+    private fun generateIconUrl(iconCode: String): String {
+        return "http://openweathermap.org/img/w/$iconCode.png"
     }
 
     private fun convertDate(date: Long): String {

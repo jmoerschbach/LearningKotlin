@@ -1,4 +1,4 @@
-package jonas.de.weatherapp.domain.mappers
+package jonas.de.weatherapp.data.server
 
 
 import android.graphics.ColorSpace
@@ -13,9 +13,13 @@ import java.text.DateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class ForecastDataMapper {
-    fun convertFromDataModel(zipcode: Long, forecast: ForecastResult): ForecastList {
-        return ForecastList(zipcode,forecast.city.name, forecast.city.country, convertForecastListToDomain(forecast.list))
+class ServerDataMapper {
+
+
+
+
+    fun convertToDomain(zipCode: Long, forecast: ForecastResult) = with(forecast) {
+        ForecastList(zipCode, city.name, city.country, convertForecastListToDomain(list))
     }
 
     fun convertForecastListToDomain(list: List<Forecast>): List<ModelForecast> {
@@ -34,11 +38,4 @@ class ForecastDataMapper {
     private fun generateIconUrl(iconCode: String): String {
         return "http://openweathermap.org/img/w/$iconCode.png"
     }
-
-    private fun convertDate(date: Long): String {
-        val df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())
-        return df.format(date)
-    }
-
-
 }

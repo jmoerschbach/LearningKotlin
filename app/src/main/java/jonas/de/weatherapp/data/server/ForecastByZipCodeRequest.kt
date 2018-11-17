@@ -1,9 +1,10 @@
-package jonas.de.weatherapp.data
+package jonas.de.weatherapp.data.server
 
 import com.google.gson.Gson
+import jonas.de.weatherapp.data.ForecastResult
 import java.net.URL
 
-class ForecastRequest(private val zipCode: String) {
+class ForecastByZipCodeRequest(private val zipCode: Long) {
 
     companion object {
         private val APP_ID = "15646a06818f61f7b8d7823ca833e1ce"

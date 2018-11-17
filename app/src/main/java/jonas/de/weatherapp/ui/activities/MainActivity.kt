@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import jonas.de.weatherapp.ui.adapters.ForecastListAdapter
 import jonas.de.weatherapp.R
 import jonas.de.weatherapp.data.Request
@@ -19,11 +20,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         forecastList.layoutManager = LinearLayoutManager(this)
-
+Log.e("Jonas bla", "hier sind wir")
         doAsync {
-            val result = RequestForecastCommand("30453").execute()
+            val result = RequestForecastCommand(30453).execute()
+ //           Log.e("Weather app", result.size.toString())
             uiThread {
-                forecastList.adapter = ForecastListAdapter(result) { toast(it.date) }
+                val adapter = ForecastListAdapter(result, { toast(it.description) })
+                forecastList.adapter = adapter
             }
         }
     }
